@@ -259,6 +259,11 @@ export default {
 </style>
 WHAT I USED / CHANGED: All of the code
 
+
+
+
+
+
 PROMPT: I'm building a Vue 3 quiz game using Vite and the Options API. Write a single-file component called QuestionCard. It receives one prop called question shaped like { question: String, answers: Array, correct: Number }. The template should display the question text and render four answer buttons using v-for. When a button is clicked: disable all buttons immediately, apply a green CSS class to the correct answer button and a red class to the clicked button if it was wrong, wait 1 second using setTimeout, then emit an event called 'answer' with the value true if the answer was correct or false if it was wrong. Reset the highlight state after emitting. Do not use TypeScript.
 RESPONSE:
 <!-- QuestionCard.vue -->
@@ -456,6 +461,10 @@ export default {
 </style>
 WHAT I USED: All of the code
 
+
+
+
+
 PROMPT: Give me an example question object to pass in to the component
 RESPONSE:
 const exampleQuestion = {
@@ -464,6 +473,11 @@ const exampleQuestion = {
   correct: 2  // zero-based index → "Mercury"
 }
 WHAT I USED: The example object
+
+
+
+
+
 
 PROMPT: Can you generate an object of 10 questions like above?
 RESPONSE: 
