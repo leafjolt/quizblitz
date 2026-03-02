@@ -1,11 +1,14 @@
 <template>
   <div id="app">
     <StartScreen v-if="gameState === 'start'" @start="startGame" />
-    <QuestionCard
-      v-else-if="gameState === 'playing'"
-      :question="questions[currentIndex]"
-      @answer="handleAnswer"
-    />
+    <div v-else-if="gameState === 'playing'">
+      <QuestionCard
+        :question="questions[currentIndex]"
+        @answer="handleAnswer"
+      />
+      <br>
+      <span>Question {{ currentIndex + 1 }} of 10</span>
+    </div>
     <ScoreBoard
       v-else
       :score="score"
