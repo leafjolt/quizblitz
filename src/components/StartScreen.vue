@@ -3,21 +3,13 @@
   <div class="start-screen">
     <h1 class="title">QuizBlitz</h1>
     <p class="tagline">Test your knowledge. Beat the clock. Become a legend.</p>
-    <button class="play-btn" @click="handlePlay">Play</button>
+    <RouterLink to="/play"><button class="play-btn">Play</button></RouterLink>
   </div>
 </template>
 
 <script>
 export default {
   name: 'StartScreen',
-
-  emits: ['start'],
-
-  methods: {
-    handlePlay() {
-      this.$emit('start');
-    },
-  },
 };
 </script>
 
