@@ -1,5 +1,17 @@
 <template>
   <div id="app">
+    <RouterView />
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'App'
+}
+</script>
+
+<!-- <template>
+  <div id="app">
     <StartScreen v-if="gameState === 'start'" @start="startGame" />
     <div v-else-if="gameState === 'playing'">
       <QuestionCard
@@ -103,4 +115,4 @@ export default {
     }
   }
 }
-</script>
+</script> -->
