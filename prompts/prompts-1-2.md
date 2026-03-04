@@ -1,3 +1,1 @@
 **[Claude Sonnet 4.6]**  I have a Vue 3 app with Vue Router 4. Write a HomeView.vue that imports my StartScreen component and displays it. The StartScreen's 'Play' button should navigate to the route named 'play' using useRouter().push() — but since I'm using the Options API, use this.$router.push({ name: 'play' }) instead of useRouter. Show me the full single-file component.
-
-**[Claude Sonnet 4.6]** 
