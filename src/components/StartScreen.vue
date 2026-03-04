@@ -3,13 +3,19 @@
   <div class="start-screen">
     <h1 class="title">QuizBlitz</h1>
     <p class="tagline">Test your knowledge. Beat the clock. Become a legend.</p>
-    <RouterLink to="/play"><button class="play-btn">Play</button></RouterLink>
+    <RouterLink to="/play"><button class="play-btn" @click="startGame">Play</button></RouterLink>
   </div>
 </template>
 
 <script>
 export default {
   name: 'StartScreen',
+  methods: {
+    startGame() {
+      sessionStorage.setItem('gameStarted', 'true');
+      this.$router.push({ name: 'play' });
+    }
+  }
 };
 </script>
 
