@@ -12,5 +12,4 @@ app.use(pinia);
 app.use(router);
 app.mount('#app');
 
-const store = useGameStore();
-window.gameStore = store;
+useGameStore();
