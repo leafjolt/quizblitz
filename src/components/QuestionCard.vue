@@ -1,18 +1,14 @@
-<!-- QuestionCard.vue -->
 <template>
   <div class="question-card">
     <p class="question-text">{{ question.question }}</p>
-
     <div class="answers">
       <button
         v-for="(answer, index) in question.answers"
         :key="index"
-        class="answer-btn"
-        :class="getAnswerClass(index)"
-        :disabled="answered"
-        @click="handleAnswer(index)"
+        :class="buttonClass(index)"
+        :disabled="selectedAnswer !== null"
+        @click="selectAnswer(index)"
       >
-        <span class="answer-letter">{{ letters[index] }}</span>
         <span class="answer-text">{{ answer }}</span>
       </button>
     </div>
@@ -36,46 +32,34 @@ export default {
           typeof val.correct === 'number'
         );
       },
+      // { question: String, answers: Array, correct: Number }
     },
+    selectedAnswer: {
+      type: Number,
+      default: null
+      // null = no answer chosen yet
+      // 0/1/2/3 = the index of the button the player clicked
+    }
   },
 
   data() {
     return {
-      answered: false,   // locks all buttons once one is clicked
-      selectedIndex: null,
-      letters: ['A', 'B', 'C', 'D'],
-    };
+      // nothing needed here — state comes from props
+    }
   },
 
   methods: {
-    handleAnswer(index) {
-      if (this.answered) return;
-
-      const isCorrect = index === this.question.correct;
-
-      this.answered = true;
-      this.selectedIndex = index;
-
-      setTimeout(() => {
-        this.$emit('answer', isCorrect);
-        this.reset();
-      }, 1000);
+    selectAnswer(index) {
+      if (this.selectedAnswer !== null) return  // already answered, ignore
+      this.$emit('answer', index)
     },
 
-    getAnswerClass(index) {
-      if (!this.answered) return '';
-
-      if (index === this.question.correct) return 'correct';
-
-      if (index === this.selectedIndex) return 'wrong';
-
-      return '';
-    },
-
-    reset() {
-      this.answered = false;
-      this.selectedIndex = null;
-    },
+    buttonClass(index) {
+      if (this.selectedAnswer === null) return ''
+      if (index === this.question.correct) return 'correct'
+      if (index === this.selectedAnswer) return 'wrong'
+      return ''
+    }
   },
 };
 </script>
@@ -110,7 +94,7 @@ export default {
   gap: 0.75rem;
 }
 
-.answer-btn {
+button {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -126,29 +110,15 @@ export default {
   transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
 }
 
-.answer-btn:hover:not(:disabled) {
+button:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.25);
   transform: translateY(-2px);
 }
 
-.answer-btn:disabled {
+button:disabled {
   cursor: not-allowed;
   opacity: 0.75;
-}
-
-.answer-letter {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  font-size: 0.8rem;
-  font-weight: 700;
-  flex-shrink: 0;
-  color: #a0aec0;
 }
 
 .answer-text {
@@ -157,27 +127,27 @@ export default {
 
 /* ── Feedback states ─────────────────────────────── */
 
-.answer-btn.correct {
+button.correct {
   background: rgba(72, 187, 120, 0.2);
   border-color: #48bb78;
   color: #9ae6b4;
 }
 
-.answer-btn.correct .answer-letter {
+/* .answer-btn.correct .answer-letter {
   background: #48bb78;
   color: #fff;
-}
+} */
 
-.answer-btn.wrong {
+button.wrong {
   background: rgba(245, 101, 101, 0.2);
   border-color: #f56565;
   color: #feb2b2;
 }
 
-.answer-btn.wrong .answer-letter {
+/* .answer-btn.wrong .answer-letter {
   background: #f56565;
   color: #fff;
-}
+} */
 
 /* ── Responsive ──────────────────────────────────── */
 

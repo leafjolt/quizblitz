@@ -1,5 +1,5 @@
 <template>
-    <div v-if="gameState === 'playing'">
+    <!-- <div v-if="gameState === 'playing'">
       <QuestionCard
         :question="questions[currentIndex]"
         @answer="handleAnswer"
@@ -11,7 +11,12 @@
       v-else
       :score="score"
       @restart="resetGame"
-    />
+    /> -->
+    <QuestionCard
+  :question="{ question: 'Test?', answers: ['A','B','C','D'], correct: 2 }"
+  :selectedAnswer="null"
+  @answer="(i) => console.log('clicked index:', i)"
+/>
 </template>
 
 <script>
