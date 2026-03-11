@@ -1,113 +1,91 @@
 <template>
-    <!-- <div v-if="gameState === 'playing'">
-      <QuestionCard
-        :question="questions[currentIndex]"
-        @answer="handleAnswer"
-      />
-      <br>
-      <span>Question {{ currentIndex + 1 }} of 10</span>
+  <div class="play-view">
+
+    <!-- Timer bar -->
+    <div class="timer-bar">
+      <div
+        class="timer-fill"
+        :style="{ width: timerPercent + '%' }"
+        :class="{ urgent: store.timeLeft <= 5 }"
+      ></div>
     </div>
-    <ScoreBoard
-      v-else
-      :score="score"
-      @restart="resetGame"
-    /> -->
+
+    <!-- Progress indicator -->
+    <p class="progress">
+      Question {{ store.progress.current }} of {{ store.progress.total }}
+    </p>
+
+    <!-- Question -->
     <QuestionCard
-  :question="{ question: 'Test?', answers: ['A','B','C','D'], correct: 2 }"
-  :selectedAnswer="null"
-  @answer="(i) => console.log('clicked index:', i)"
-/>
+      v-if="store.gameState === 'playing' && store.currentQuestion"
+      :question="store.currentQuestion"
+      :selectedAnswer="store.selectedAnswer"
+      @answer="store.submitAnswer"
+    />
+
+    <!-- Score screen -->
+    <ScoreBoard
+      v-else-if="store.gameState === 'end'"
+      :score="store.score"
+      :total="store.questions.length"
+      @restart="handleRestart"
+    />
+
+  </div>
 </template>
 
 <script>
-import QuestionCard from '../components/QuestionCard.vue';
-import ScoreBoard from '../components/ScoreBoard.vue';
-
-const QUESTIONS = [
-  {
-    question: "What is the largest planet in our solar system?",
-    answers: ["Saturn", "Jupiter", "Neptune", "Uranus"],
-    correct: 1,
-  },
-  {
-    question: "Which element has the atomic number 1?",
-    answers: ["Helium", "Oxygen", "Carbon", "Hydrogen"],
-    correct: 3,
-  },
-  {
-    question: "What year did the Berlin Wall fall?",
-    answers: ["1987", "1991", "1989", "1993"],
-    correct: 2,
-  },
-  {
-    question: "Which country has the most natural lakes?",
-    answers: ["Russia", "USA", "Canada", "Finland"],
-    correct: 2,
-  },
-  {
-    question: "What is the fastest land animal?",
-    answers: ["Lion", "Cheetah", "Greyhound", "Pronghorn"],
-    correct: 1,
-  },
-  {
-    question: "How many strings does a standard guitar have?",
-    answers: ["4", "5", "7", "6"],
-    correct: 3,
-  },
-  {
-    question: "Which Shakespeare play features the character Ophelia?",
-    answers: ["Macbeth", "Othello", "Hamlet", "King Lear"],
-    correct: 2,
-  },
-  {
-    question: "What is the smallest country in the world by area?",
-    answers: ["Monaco", "San Marino", "Vatican City", "Liechtenstein"],
-    correct: 2,
-  },
-  {
-    question: "Which gas makes up approximately 78% of Earth's atmosphere?",
-    answers: ["Oxygen", "Carbon Dioxide", "Argon", "Nitrogen"],
-    correct: 3,
-  },
-  {
-    question: "Who developed the theory of general relativity?",
-    answers: ["Isaac Newton", "Nikola Tesla", "Albert Einstein", "Max Planck"],
-    correct: 2,
-  },
-];
+import { useGameStore } from '../stores/gameStore.js'
+import QuestionCard from '../components/QuestionCard.vue'
+import ScoreBoard from '../components/ScoreBoard.vue'
 
 export default {
-    name: 'PlayView',
-    components: { QuestionCard, ScoreBoard },
-    mounted() {
-        this.startGame();
-    },
-    data() {
-        return {
-            questions: QUESTIONS,
-            currentIndex: 0,
-            score: 0,
-            gameState: "playing" // "playing" | "end"
-        }
-    },
-    methods: {
-        startGame() {
-            this.gameState = "playing";
-            this.currentIndex = 0;
-            this.score = 0;
-        },
-        handleAnswer(isCorrect) {
-            if (isCorrect) {
-                this.score++;
-            }
-            this.currentIndex++;
-            if (this.currentIndex === this.questions.length) {
-                this.gameState = "end";
-            }
-        },
-        resetGame() {
-            this.$router.push({ name: 'home' });
-        }
+  name: 'PlayView',
+  components: { QuestionCard, ScoreBoard },
+
+  setup() {
+    const store = useGameStore()
+    return { store }
+  },
+
+  computed: {
+    timerPercent() {
+      return (this.store.timeLeft / 15) * 100
     }
+  },
+
+  methods: {
+    handleRestart() {
+      this.store.resetGame()
+      this.$router.push({ name: 'home' })
+    }
+  }
 }
 </script>
+
+<style scoped>
+.timer-bar {
+  width: 100%;
+  height: 8px;
+  background: #333;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.timer-fill {
+  height: 100%;
+  background: #4caf50;
+  transition: width 0.9s linear;
+}
+
+.timer-fill.urgent {
+  background: #e53935;
+}
+
+.progress {
+  text-align: center;
+  color: #aaa;
+  margin-bottom: 1rem;
+}
+</style>
