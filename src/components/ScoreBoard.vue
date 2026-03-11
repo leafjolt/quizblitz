@@ -7,7 +7,7 @@
       <div class="score-display">
         <span class="score-value">{{ score }}</span>
         <span class="score-divider">/</span>
-        <span class="score-total">10</span>
+        <span class="score-total">{{ total }}</span>
       </div>
 
       <p class="score-label">{{ resultMessage }}</p>
@@ -38,6 +38,10 @@ export default {
       required: true,
       validator: (value) => value >= 0 && value <= 10,
     },
+    total: {
+      type: Number,
+      default: 10
+    }
   },
 
   computed: {
