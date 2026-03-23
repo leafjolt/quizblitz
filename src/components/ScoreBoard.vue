@@ -21,12 +21,23 @@
         >★</span>
       </div>
 
+      <div v-if="!store.scoreSubmitted">
+        <input
+          v-model="store.playerName"
+          placeholder="Enter your name"
+        />
+        <button @click="store.submitScore()">Submit Score</button>
+      </div>
+      <p v-else>Score submitted! ✓</p>
+      <br />
       <button class="restart-btn" @click="handleRestart">Play Again</button>
     </div>
   </div>
 </template>
 
 <script>
+import { useGameStore } from '../stores/gameStore.js'
+
 export default {
   name: 'ScoreBoard',
 
@@ -42,6 +53,11 @@ export default {
       type: Number,
       default: 10
     }
+  },
+
+  setup() {
+    const store = useGameStore()
+    return { store }
   },
 
   computed: {
