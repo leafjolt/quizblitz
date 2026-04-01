@@ -21,14 +21,19 @@
         >★</span>
       </div>
 
-      <div v-if="!store.scoreSubmitted">
-        <input
-          v-model="store.playerName"
-          placeholder="Enter your name"
-        />
-        <button @click="store.submitScore()">Submit Score</button>
+      <div v-if="store.token">
+        <p>Playing as {{ store.userEmail }}</p>
+        <button v-if="!store.scoreSubmitted" @click="store.submitScore()">
+          Submit Score
+        </button>
+        <p v-else>Score submitted ✓</p>
       </div>
-      <p v-else>Score submitted! ✓</p>
+
+      <div v-else>
+        <p>
+          <RouterLink to="/login">Log in</RouterLink> to save your score to the leaderboard.
+        </p>
+      </div>
       <br />
       <button class="restart-btn" @click="handleRestart">Play Again</button>
     </div>
