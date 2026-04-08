@@ -60,6 +60,7 @@ export const useGameStore = defineStore('game', {
             this.gameState = 'playing'
             this.selectedAnswer = null
             this.timeLeft = 15
+            this.streak = 0
             this._startTimer()
         },
         submitAnswer(answerIndex) {
